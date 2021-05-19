@@ -86,7 +86,7 @@ int main()
             NUMBER(number);
         }
      }
-     if(bet == "red"){
+     if(bet == "rojo" || bet = "rojos"){
 
         srand(time(0));
         cout <<"girando..." << endl;

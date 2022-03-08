@@ -194,39 +194,39 @@ int main()
 //elegir color de acuerdo al numero
 void NUMERO_AZAR(int &numero, int &id){
 
- if(numero == 0)
-{
-    cout << numero << " verde" << endl; //GREEN
-}
+    if(numero == 0){
+        
+        cout << numero << " verde" << endl; //GREEN
+    }
 
-        else if (numero % 2 == 0 && ((0 < numero && numero < 11) || (19 < numero && numero < 29))){ //negros pares (1 -> 10 & 20 -> 28)
+    else if (numero % 2 == 0 && ((0 < numero && numero < 11) || (19 < numero && numero < 29))){ //negros pares (1 -> 10 & 20 -> 28)
+            
+        cout << numero << " negro" << endl;
+        id = 0;
+    }
 
-            cout << numero << " negro" << endl;
-            id = 0;
-        }
+    else if (numero % 2 == 0 && ((11 < numero && numero < 19) || (29 < numero && numero < 37))){ //rojos pares (12 -> 18 & 30 -> 36)
 
-        else if (numero % 2 == 0 && ((11 < numero && numero < 19) || (29 < numero && numero < 37))){ //rojos pares (12 -> 18 & 30 -> 36)
+        cout << numero << " rojo" << endl;
+        id = 1;
+    }
 
-            cout << numero << " rojo" << endl;
-            id = 1;
-        }
+    else if (numero % 2 != 0 && ((0 < numero && numero < 10) || (18 < numero && numero < 28))){ //rojos impares (1 -> 9 & 19 -> 27)
 
-        else if (numero % 2 != 0 && ((0 < numero && numero < 10) || (18 < numero && numero < 28))){ //rojos impares (1 -> 9 & 19 -> 27)
+        cout << numero << " rojo" << endl;
+        id = 1;
+    }
 
-            cout << numero << " rojo" << endl;
-            id = 1;
-        }
+    else if (numero % 2 != 0 && ((10 < numero && numero < 18) || (28 < numero && numero < 36))){ //negros impares (11 -> 17 & 29 -> 35)
 
-        else if (numero % 2 != 0 && ((10 < numero && numero < 18) || (28 < numero && numero < 36))){ //negros impares (11 -> 17 & 29 -> 35)
+        cout << numero << " negro" << endl;
+        id = 0;
+    }
 
-            cout << numero << " negro" << endl;
-            id = 0;
-        }
+    else{
 
-        else{
-
-            cout << numero << "ERROR???" << endl; //error?
-        }
+        cout << numero << "ERROR???" << endl; //error?
+    }
 }
 
 //elegir numero al azar

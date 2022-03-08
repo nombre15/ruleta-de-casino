@@ -196,7 +196,7 @@ void NUMERO_AZAR(int &numero, int &id){
 
     if(numero == 0){
         
-        cout << numero << " verde" << endl; //GREEN
+        cout << numero << " verde" << endl; //SOY DEL VERDE SOY FELIZ
     }
 
     else if (numero % 2 == 0 && ((0 < numero && numero < 11) || (19 < numero && numero < 29))){ //negros pares (1 -> 10 & 20 -> 28)

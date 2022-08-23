@@ -212,9 +212,9 @@ int main(){
 //fin un solo numero
 
 //excepcion
-        else if(NumeroApuesta > 37){
+        else if(stoi(apuesta) > 37){
 
-            cout << "El " << apuesta << " es mayor a 37, no es un numero valido\n" << endl;
+            cout << "El " << stoi(apuesta) << " es mayor a 37, no es un numero valido\n" << endl;
             goto solo;
         }
 //fin excepcion
@@ -265,7 +265,6 @@ void ELEGIR_COLOR(int &numero, string &id){
 }
 //fin elegir color de numero
 
-
 //elegir numero al azar
 void ELEGIR_NUMERO_AZAR(int &numero){
 
@@ -281,7 +280,6 @@ void ELEGIR_NUMERO_AZAR(int &numero){
     system("CLS");
 }
 //fin elegir numero al azar
-
 
 //jugar otra vez
 void CONTINUAR(){

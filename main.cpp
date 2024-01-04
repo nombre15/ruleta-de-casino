@@ -4,258 +4,273 @@
 #include <chrono>
 #include <thread>
 #include <windows.h>
+#include <algorithm>
+#include <cctype>
 #include <conio.h>
 using namespace std;
 
-void ELEGIR_NUMERO_AZAR(int&);
-void ELEGIR_COLOR(int&, string&);
-void CONTINUAR();
+//TODO: separar por clases si es posible, agregar documentacion y eliminar codigo innecesario
+
+void elegirNumeroAzar(int&);
+void elegirColor(int&, string&);
+void jugadorGana(int, int&, string&);
+void jugadorPierde(int, int&, string&);
 
 int main(){
 
+    SetConsoleTitle("Ruleta");
+    char tecla;
+
+    //Inicio del juego
     do{
-        SetConsoleTitle("Ruleta");
-        string apuesta, color, colorNumero;
-        int NumeroApuesta;
+
+        string tipoApuesta, colorNumero;
+        int numeroApuesta, numero, dinero = 0;
         srand(time(0));
-        int random;
 
-        cout << "Como quieres apostar?" << endl;
-        cout << "\nImpares \nPares \nRojos \nNegros \nUn numero \nNumero del 1 - 18 \nNumero del 19 - 36\n" << endl;
+        cout << "Ingrese la cantidad de dinero a apostar: $";
+        cin >> dinero;
 
-        cin >> apuesta;
+        //Si se ingresa un valor no numerico
+         while(cin.fail() || cin.peek() != '\n') {
 
+            system("cls");
+            cout << "Ingrese una cantidad de dinero valida\n" << endl;
+            cin.clear();
+            cin.ignore(256,'\n');
+            cout << "$";
+            cin >> dinero;
+        }
+
+        system("cls");
+
+        do{
+            cout << "Elige el tipo de apuesta" << endl;
+            cout << "\n1.Impares \n2.Pares \n3.Rojos \n4.Negros \n5.Un numero \n6.Numero del 1 al 18 \n7.Numero del 19 al 36\n" << endl;
+
+            cin >> tipoApuesta;
+
+            transform(tipoApuesta.begin(), tipoApuesta.end(), tipoApuesta.begin(),[](unsigned char c) { return tolower(c); }); // Convierte el string a minusculas
+
+            system("CLS");
+
+            //impares
+            if(tipoApuesta == "impares" || tipoApuesta == "impar" || tipoApuesta == "1"){
+
+                elegirNumeroAzar(numero);
+
+                if (numero % 2 != 0){
+
+                    jugadorGana(numero, dinero, colorNumero);
+                }
+                else{
+
+                    jugadorPierde(numero, dinero, colorNumero);
+                }
+
+                cout << "\n\nApostaste por los impares" << endl;
+                break;
+            }
+
+            //pares
+            else if(tipoApuesta == "pares" || tipoApuesta == "par" || tipoApuesta == "2"){
+
+                elegirNumeroAzar(numero);
+
+                if (numero % 2 == 0){
+
+                    jugadorGana(numero, dinero, colorNumero);
+                }
+                else{
+
+                    jugadorPierde(numero, dinero, colorNumero);
+                }
+
+                cout << "\n\nApostaste por los pares" << endl;
+                break;
+            }
+
+            //rojos
+            else if(tipoApuesta == "rojo" || tipoApuesta == "rojos" || tipoApuesta == "3"){
+
+                elegirNumeroAzar(numero);
+                elegirColor(numero, colorNumero);
+                system("CLS");
+
+                if (colorNumero == "rojo"){
+
+                    jugadorGana(numero, dinero, colorNumero);
+                }
+                else{
+
+                    jugadorPierde(numero, dinero, colorNumero);
+                }
+
+                cout << "\n\nApostaste por los rojos" << endl;
+                break;
+            }
+
+            //negros
+            else if(tipoApuesta == "negro" || tipoApuesta == "negros" || tipoApuesta == "4"){
+
+                elegirNumeroAzar(numero);
+                elegirColor(numero, colorNumero);
+                system("CLS");
+
+                if (colorNumero == "negro"){
+
+                    jugadorGana(numero, dinero, colorNumero);
+                }
+
+                else{
+
+                    jugadorPierde(numero, dinero, colorNumero);
+                }
+
+                cout << "\n\nApostaste por los negros" << endl;
+                break;
+            }
+
+            //un solo numero
+            else if(tipoApuesta == "numero" || tipoApuesta == "5"){
+
+                do{
+                    cout << "Escribe el numero con el que quieres apostar" << endl;
+                    cin >> numeroApuesta;
+
+                    if(numeroApuesta > 37){
+
+                        cout << numeroApuesta << " es mayor a 37, no es un numero valido\n" << endl;
+                    }
+
+                    else if(numeroApuesta < 0){
+
+                        cout << numeroApuesta << " es menor a 0, no es un numero valido\n" << endl;
+                    }
+
+                    while(cin.fail() || cin.peek() != '\n') {
+
+                        system("cls");
+                        cout << "Ingrese un numero valido: ";
+                        cin.clear();
+                        cin.ignore(256,'\n');
+                        cin >> numeroApuesta;
+                    }
+                }while(numeroApuesta > 37 || numeroApuesta < 0);
+
+                system("CLS");
+                elegirNumeroAzar(numero);
+
+                if(numero == numeroApuesta){
+
+                    jugadorGana(numero, dinero, colorNumero);
+                }
+
+                else {
+
+                    jugadorPierde(numero, dinero, colorNumero);
+                }
+
+                 cout << "\n\nTu apuesta: "; elegirColor(numeroApuesta, colorNumero);
+                 break;
+            }
+
+            //1 al 18
+            else if(tipoApuesta == "1 al 18" || tipoApuesta == "6"){
+
+                elegirNumeroAzar(numero);
+
+                if(0 < numero && numero < 19){
+
+                    jugadorGana(numero, dinero, colorNumero);
+                }
+
+                else{
+
+                    jugadorPierde(numero, dinero, colorNumero);
+                }
+
+                cout << "\n\nApostaste del 1 al 18" << endl;
+                break;
+            }
+
+            //19 al 36
+            else if(tipoApuesta == "19 al 36" || tipoApuesta == "7"){
+
+                elegirNumeroAzar(numero);
+
+                if(18 < numero && numero < 37){
+
+                    jugadorGana(numero, dinero, colorNumero);
+                }
+
+                else{
+
+                    jugadorPierde(numero, dinero, colorNumero);
+                }
+
+                cout << "\n\nApostaste del 19 al 36" << endl;
+                break;
+            }
+
+            //opcion invalida
+            else{
+
+                cout << tipoApuesta << " no es una opcion valida." << endl;
+            }
+        }
+        while(true);
+
+        cout << "\n\nPresione E para jugar otra vez o X para salir" << endl;
+        tecla = getch();
+
+        while(tecla != 'e' && tecla != 'x'){
+
+            system("CLS");
+            cout << "La tecla ingresada no es valida." << endl;
+            cout << "Presione E para jugar otra vez o X para salir" << endl;
+            tecla = getch();
+        }
         system("CLS");
 
-//un solo numero
-        if(apuesta == "numero" || apuesta == "Numero" || apuesta == "NUMERO"){
+    }while(tecla == 'e');
 
-            solo:
-            cout << "Escribe el numero con el que quieres apostar" << endl;
-            cin >> NumeroApuesta;
-
-            if(NumeroApuesta > 37){
-                cout << "\El " << apuesta << " es mayor a 37, no es un numero valido\n" << endl;
-                goto solo;
-            }
-
-            system("CLS");
-
-            ELEGIR_NUMERO_AZAR(random);
-
-            if(random == NumeroApuesta){
-
-                cout << "Ganaste!" << endl;
-                cout << "\nNumero ganador: "; ELEGIR_COLOR(random, color);
-            }
-
-            else {
-
-                cout << "Perdiste!" << endl;
-                cout << "\nNumero ganador: "; ELEGIR_COLOR(random, color);
-            }
-
-             cout << "\n\nTu apuesta: "; ELEGIR_COLOR(NumeroApuesta, color);
-        }
-//fin un solo numero
-
-//impares
-        else if(apuesta == "impares" || apuesta == "impar" || apuesta == "Impar" || apuesta == "Impares" || apuesta == "IMPAR" || apuesta == "IMPARES"){
-
-            ELEGIR_NUMERO_AZAR(random);
-
-            if (random % 2 != 0){
-
-                cout << "Ganador!" << endl;
-                cout << "\nNumero ganador: "; ELEGIR_COLOR(random, color);
-            }
-
-            else{
-
-                cout << "\nPerdedorrrr!!" << endl;
-                cout << "\nNumero ganador: "; ELEGIR_COLOR(random, color);
-            }
-
-            cout << "\n\nApostaste por los impares" << endl;
-        }
-//fin impares
-
-//pares
-        else if(apuesta == "pares" || apuesta == "par" || apuesta == "Pares" || apuesta == "Par" || apuesta == "PAR" || apuesta == "PARES"){
-
-            ELEGIR_NUMERO_AZAR(random);
-
-            if (random % 2 == 0){
-
-                cout << "Ganador!" << endl;
-                cout << "\nNumero ganador: "; ELEGIR_COLOR(random, color);
-            }
-
-            else{
-
-                cout << "Perdedorr!!" << endl;
-                cout << "\nNumero ganador: "; ELEGIR_COLOR(random, color);
-            }
-
-            cout << "\n\nApostaste por los pares" << endl;
-        }
-//fin pares
-
-//rojos
-        else if(apuesta == "rojo" || apuesta == "rojos" || apuesta == "Rojo" || apuesta == "Rojos" || apuesta == "ROJO" || apuesta == "ROJOS"){
-
-            ELEGIR_NUMERO_AZAR(random);
-            ELEGIR_COLOR(random, color);
-            system("CLS");
-
-            if (color == "rojo"){
-
-                cout << "Ganador!!" <<endl;
-                cout << "\nNumero ganador: "; ELEGIR_COLOR(random, color);
-            }
-
-            else{
-
-                cout << "Perdisteeee" << endl;
-                cout << "\nNumero ganador: "; ELEGIR_COLOR(random, color);
-            }
-
-            cout << "\n\nApostaste por los rojos" << endl;
-        }
-//fin rojos
-
-//negros
-        else if(apuesta == "negro" || apuesta == "negros" || apuesta == "Negro" || apuesta == "Negros" || apuesta == "NEGRO" || apuesta == "NEGROS"){
-
-            ELEGIR_NUMERO_AZAR(random);
-            ELEGIR_COLOR(random, color);
-            system("CLS");
-
-            if (color == "negro"){
-
-                cout << "Ganador ganador" << endl;
-                cout << "\nNumero ganador: "; ELEGIR_COLOR(random, color);
-            }
-
-            else{
-
-                cout << "Perdisteee" << endl;
-                cout << "\nNumero ganador: "; ELEGIR_COLOR(random, color);
-            }
-
-            cout << "\n\nApostaste por los negros" << endl;
-        }
-//fin negros
-
-//1 al 18
-        else if(apuesta == "1-18" || apuesta == "numero del 1 - 18" || apuesta == "1al18" || apuesta == "Numero del 1 al 18"){
-
-            ELEGIR_NUMERO_AZAR(random);
-
-            if(0 < random && random < 19){
-
-                cout << "Ganaste!" << endl;
-                cout << "\nNumero ganador: "; ELEGIR_COLOR(random, color);
-            }
-
-            else{
-
-                cout << "Perdiste!" << endl;
-                cout << "\nNumero ganador: "; ELEGIR_COLOR(random, color);
-            }
-
-            cout << "\n\nApostaste del 1 al 18" << endl;
-        }
-//fin 1 al 18
-
-//19 al 36
-        else if(apuesta == "19-36" || apuesta == "numero del 19 - 36" || apuesta == "19al36" || apuesta == "numero del 19 al 36"){
-
-            ELEGIR_NUMERO_AZAR(random);
-
-            if(18 < random && random < 37){
-
-                cout << "Ganaste!" << endl;
-                cout << "\nNumero ganador: "; ELEGIR_COLOR(random, color);
-            }
-
-            else{
-
-                cout << "Perdiste!" << endl;
-                cout << "\nNumero ganador: "; ELEGIR_COLOR(random, color);
-            }
-
-            cout << "\n\nApostaste del 19 al 36" << endl;
-        }
-//fin 19 al 36
-
-//un solo numero 
-        else if(stoi(apuesta) >= 0 && stoi(apuesta) < 38){
-
-            ELEGIR_NUMERO_AZAR(random);
-            NumeroApuesta = stoi(apuesta);
-
-            if(NumeroApuesta == random){
-
-                cout << "Ganaste!" << endl;
-                cout << "\nNumero ganador: "; ELEGIR_COLOR(random, color);
-            }
-
-            else{
-
-                cout << "Perdiste!" << endl;
-                cout << "\nNumero ganador: "; ELEGIR_COLOR(random, color);
-            }
-
-            cout << "\n\nTu apuesta: "; ELEGIR_COLOR(NumeroApuesta, color);
-        }
-//fin un solo numero
-
-//excepcion
-        else if(stoi(apuesta) > 37){
-
-            cout << "El " << stoi(apuesta) << " es mayor a 37, no es un numero valido\n" << endl;
-            goto solo;
-        }
-//fin excepcion
-
-        CONTINUAR();
-        system("CLS");
-
-    }while(1==1);
+    system("CLS");
+    cout << "Gracias por jugar!" << endl;
+    return 0;
 }
 
 //elegir color de acuerdo al numero
-void ELEGIR_COLOR(int &numero, string &id){
+void elegirColor(int &numero, string &color){
 
     if(numero == 0){
 
         cout << numero << " verde" << endl; //SOY DEL VERDE SOY FELIZ
-        id = "verde";
+        color = "verde";
     }
 
     else if (numero % 2 == 0 && (( 1 <= numero && numero <= 10) || (20 <= numero && numero <= 28))){ //negros pares (1 -> 10 & 20 -> 28)
 
         cout << numero << " negro" << endl;
-        id = "negro";
+        color = "negro";
     }
 
     else if (numero % 2 == 0 && ((12 <= numero && numero <= 18) || (30 <= numero && numero <= 36))){ //rojos pares (12 -> 18 & 30 -> 36)
 
         cout << numero << " rojo" << endl;
-        id = "rojo";
+        color = "rojo";
     }
 
     else if (numero % 2 != 0 && ((1 <= numero && numero <= 9) || (19 <= numero && numero <= 27))){ //rojos impares (1 -> 9 & 19 -> 27)
 
         cout << numero << " rojo" << endl;
-        id = "rojo";
+        color = "rojo";
     }
 
     else if (numero % 2 != 0 && ((11 <= numero && numero <= 17) || (29 <= numero && numero <= 35))){ //negros impares (11 -> 17 & 29 -> 35)
 
         cout << numero << " negro" << endl;
-        id = "negro";
+        color = "negro";
     }
 
     else{
@@ -263,30 +278,36 @@ void ELEGIR_COLOR(int &numero, string &id){
         cout << numero << "ERROR???" << endl; //error?
     }
 }
-//fin elegir color de numero
 
 //elegir numero al azar
-void ELEGIR_NUMERO_AZAR(int &numero){
+// TODO: funcion para que el numero en chrono::milliseconds empiece chiquito y sea cada vez mas grande
+void elegirNumeroAzar(int &numero){
 
      cout <<"Girando..." << "\n" << endl;
 
      for(int x = 0; x < 8; x++){
 
         numero = rand() % 37;
-        this_thread::sleep_for (chrono::milliseconds(500));
+        this_thread::sleep_for (chrono::milliseconds(500)); 
         cout << numero << "\r";
      }
 
     system("CLS");
 }
-//fin elegir numero al azar
 
-//jugar otra vez
-void CONTINUAR(){
+void jugadorGana(int numero,  int& dinero, string& colorNumero){
 
-    int c;
-    printf( "\n\n\n\nPresiona cualquier tecla para jugar de nuevo");
-    c = getch();
-    if (c == 0 || c == 224) getch();
+    cout << "Ganador!" << endl;
+    cout << "\nNumero ganador: "; elegirColor(numero, colorNumero);
+    dinero = dinero + (dinero * 0.5);
+    cout << "\nAhora tienes $" << dinero;
 }
-//fin jugar otra vez
+
+void jugadorPierde(int numero, int& dinero, string& colorNumero){
+
+    cout << "\nPerdedorrrr!!" << endl;
+    cout << "\nNumero ganador: "; elegirColor(numero, colorNumero);
+    dinero = 0;
+    cout << "\nAhora tienes $" << dinero;
+}
+

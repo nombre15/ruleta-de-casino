@@ -5,7 +5,6 @@
 #include <thread>
 #include <windows.h>
 #include <algorithm>
-#include <cctype>
 #include <conio.h>
 using namespace std;
 
@@ -279,16 +278,22 @@ void elegirColor(int &numero, string &color){
     }
 }
 
-//elegir numero al azar
-// TODO: funcion para que el numero en chrono::milliseconds empiece chiquito y sea cada vez mas grande
 void elegirNumeroAzar(int &numero){
 
      cout <<"Girando..." << "\n" << endl;
 
-     for(int x = 0; x < 8; x++){
+     int max = 50;
+     int min = 15;
+     int azar = rand()%(max-min + 1) + min;
+     int tiempo;
+     int temp1 = rand() % 50;
+     int temp2 = rand() % 50;
+
+     for(int x = 0; x < azar; x++){
 
         numero = rand() % 37;
-        this_thread::sleep_for (chrono::milliseconds(500)); 
+        tiempo = temp1 + temp2 * x;
+        this_thread::sleep_for (chrono::milliseconds(tiempo));
         cout << numero << "\r";
      }
 
@@ -299,7 +304,9 @@ void jugadorGana(int numero,  int& dinero, string& colorNumero){
 
     cout << "Ganador!" << endl;
     cout << "\nNumero ganador: "; elegirColor(numero, colorNumero);
+
     dinero = dinero + (dinero * 0.5);
+
     cout << "\nAhora tienes $" << dinero;
 }
 
@@ -307,7 +314,10 @@ void jugadorPierde(int numero, int& dinero, string& colorNumero){
 
     cout << "\nPerdedorrrr!!" << endl;
     cout << "\nNumero ganador: "; elegirColor(numero, colorNumero);
+
     dinero = 0;
+
     cout << "\nAhora tienes $" << dinero;
 }
+
 

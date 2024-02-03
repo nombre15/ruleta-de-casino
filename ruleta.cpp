@@ -26,7 +26,7 @@ int ruleta::jugar(){
         cin >> dinero;
 
         //Si se ingresa un valor no numerico
-         while(cin.fail() || cin.peek() != '\n') {
+         while(cin.fail() || cin.peek() != '\n' || dinero <= 0) {
 
             system("cls");
             cout << "Ingrese una cantidad de dinero valida\n" << endl;

@@ -25,16 +25,7 @@ int ruleta::jugar(){
         cout << "Ingrese la cantidad de dinero a apostar: $";
         cin >> dinero;
 
-        //Si se ingresa un valor no numerico
-         while(cin.fail() || cin.peek() != '\n' || dinero <= 0) {
-
-            system("cls");
-            cout << "Ingrese una cantidad de dinero valida\n" << endl;
-            cin.clear();
-            cin.ignore(256,'\n');
-            cout << "$";
-            cin >> dinero;
-        }
+        validarDinero(dinero);
 
         system("cls");
 
@@ -435,3 +426,15 @@ void ruleta::jugadorPierde(int numero, int rojos[], int negros[], int& dinero, s
     cout << "\nAhora tienes $" << dinero;
 }
 
+void ruleta::validarDinero(int& dinero){
+
+    while(cin.fail() || cin.peek() != '\n' || dinero <= 0) {
+
+        system("cls");
+        cout << "Ingrese una cantidad de dinero valida\n" << endl;
+        cin.clear();
+        cin.ignore(256,'\n');
+        cout << "$";
+        cin >> dinero;
+    }
+}
